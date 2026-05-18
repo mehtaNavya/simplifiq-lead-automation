@@ -1,35 +1,9 @@
-# SimplifIQ — Automated Lead Intake & AI Audit Report System
+# SimplifIQ: Automated Lead Intake & AI Audit Report System
 
-> A fully automated pipeline that captures prospect data, enriches it from public sources, generates a personalised AI-powered PDF audit report, and emails it to the lead — all without human intervention.
+> A fully automated pipeline that captures prospect data, enriches it from public sources, generates a personalised AI powered PDF audit report, and emails it to the lead, all without human intervention.
 
----
 
-## Architecture Overview
 
-```
-Lead Form (Browser)
-      │ POST /submit-lead
-      ▼
-┌─────────────────────────────────────────────────────────┐
-│                    Flask Backend                         │
-│                                                         │
-│  1. Validate         → validators.py                   │
-│  2. Enrich           → enrichment.py                   │
-│     ├─ Scrape website (meta, tech stack, socials)      │
-│     ├─ DuckDuckGo Instant Answer API                   │
-│     └─ Wikipedia REST API                              │
-│  3. Generate PDF     → report_generator.py             │
-│     ├─ Claude API  → structured JSON report content    │
-│     └─ ReportLab   → polished multi-page PDF           │
-│  4. Send email       → email_sender.py                 │
-│     ├─ SendGrid (preferred)                            │
-│     └─ SMTP fallback                                   │
-│  5. [BONUS] Log      → sheets_logger.py               │
-│  6. [BONUS] Archive  → drive_archiver.py              │
-└─────────────────────────────────────────────────────────┘
-```
-
----
 
 ## Tech Stack
 
@@ -46,7 +20,7 @@ Lead Form (Browser)
 
 ---
 
-## Quick Start
+## Steps
 
 ### 1. Clone and set up
 
@@ -75,40 +49,20 @@ python app.py
 
 ---
 
-## Configuration
 
-Edit `.env` — minimum required keys for full functionality:
 
-| Variable | Required | Description |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | ✅ Yes | Powers the AI report generation |
-| `SENDGRID_API_KEY` | One of these | SendGrid email delivery |
-| `SMTP_HOST` + `SMTP_USER` + `SMTP_PASS` | One of these | SMTP email delivery |
-| `FROM_EMAIL` | ✅ Yes | Sender email address |
-| `GOOGLE_SHEETS_ID` | Optional (bonus) | Enable Google Sheets logging |
-| `GOOGLE_DRIVE_FOLDER_ID` | Optional (bonus) | Enable Drive PDF archiving |
-| `GOOGLE_SERVICE_ACCOUNT_FILE` | If using Google APIs | Path to service account JSON |
+### Email setup
 
-### Email setup options
-
-**Option A — SendGrid (recommended)**
+**SendGrid**
 1. Create account at [sendgrid.com](https://sendgrid.com) (free tier: 100 emails/day)
 2. Create an API key with "Mail Send" permission
 3. Set `SENDGRID_API_KEY=SG.xxxxx` in `.env`
 4. Verify your sender email in SendGrid dashboard
 
-**Option B — Gmail SMTP**
-1. Enable 2-Step Verification on your Google account
-2. Generate an App Password: Account → Security → App Passwords
-3. Set in `.env`:
-   ```
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your@gmail.com
-   SMTP_PASS=xxxx xxxx xxxx xxxx    # 16-char app password
-   ```
 
-### Google APIs setup (bonus features)
+
+
+### Google APIs setup
 
 1. Create a project in [Google Cloud Console](https://console.cloud.google.com)
 2. Enable **Google Sheets API** and **Google Drive API**
@@ -166,7 +120,7 @@ Returns `{"status": "ok"}` — useful for uptime monitoring.
 
 ## PDF Report Structure
 
-The generated PDF includes:
+The PDF includes:
 
 1. **Cover Page** — company name, date, prepared-for details
 2. **Executive Summary** — AI-written, 200–300 words personalised to the company
@@ -181,18 +135,6 @@ The generated PDF includes:
 
 ---
 
-## Design Decisions & Tradeoffs
-
-| Decision | Reasoning |
-|---|---|
-| No external scraping proxy | Uses direct HTTP requests with a polite user-agent; respects robots.txt implicitly via timeouts and rate limits |
-| Graceful enrichment failure | Enrichment errors are non-fatal — the pipeline continues with whatever data is available |
-| Claude JSON output | Structured JSON prompt gives deterministic parsing; fallback template handles JSON parse failures |
-| ReportLab over WeasyPrint | No OS-level dependencies (Chrome/Chromium), faster, and fully portable |
-| SendGrid + SMTP dual support | Flexibility for different deployment environments without changing code |
-| Synchronous pipeline | Simpler for a prototype; in production, replace with Celery + Redis for async processing |
-
----
 
 ## Project Structure
 
@@ -216,18 +158,4 @@ simplifiq/
 └── logs/                     # App logs (gitignored)
 ```
 
----
 
-## Limitations & Production Notes
-
-- **Rate limits**: DuckDuckGo and Wikipedia APIs are rate-limited. Under high load, some enrichment calls may be skipped.
-- **Website scraping**: Some sites block scrapers via Cloudflare or JavaScript rendering. The system falls back gracefully.
-- **Async processing**: For production, wrap the pipeline in a Celery task and return a job ID immediately, then poll for status.
-- **PDF storage**: Currently written to local disk. In production, upload to S3/GCS.
-- **Security**: Add CSRF protection and rate limiting (e.g., Flask-Limiter) before exposing publicly.
-
----
-
-## License
-
-MIT — see LICENSE file.
