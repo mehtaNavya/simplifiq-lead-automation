@@ -114,7 +114,7 @@ python app.py
 ```
 
 ### `GET /health`
-Returns `{"status": "ok"}` — useful for uptime monitoring.
+Returns `{"status": "ok"}` : useful for uptime monitoring.
 
 ---
 
@@ -122,16 +122,16 @@ Returns `{"status": "ok"}` — useful for uptime monitoring.
 
 The PDF includes:
 
-1. **Cover Page** — company name, date, prepared-for details
-2. **Executive Summary** — AI-written, 200–300 words personalised to the company
-3. **Company Snapshot** — what they do, market position, digital maturity
-4. **AI Readiness Scorecard** — 5 dimensions with visual bar indicators (0–100)
-5. **Growth Opportunity Areas** — 4–5 tailored opportunities with impact/effort ratings
-6. **Quick Wins** — 3 actions actionable in 30 days
-7. **Recommended Tools** — table with use-case and estimated ROI
-8. **Risks to Address** — severity-coded risk items
-9. **Next Steps** — prioritised roadmap with timeline and owner
-10. **Closing Note** — personalised call-to-action
+1. **Cover Page** : company name, date, prepared-for details
+2. **Executive Summary** : AI written, 200–300 words personalised to the company
+3. **Company Snapshot** : what they do, market position, digital maturity
+4. **AI Readiness Scorecard** : 5 dimensions with visual bar indicators (0–100)
+5. **Growth Opportunity Areas** : tailored opportunities with impact/effort ratings
+6. **Quick Wins** : 3 actions actionable in 30 days
+7. **Recommended Tools** : table with usecase and estimated ROI
+8. **Risks to Address** : severity coded risk items
+9. **Next Steps** : prioritised roadmap with timeline and owner
+10. **Closing Note** : personalised call to action
 
 ---
 
