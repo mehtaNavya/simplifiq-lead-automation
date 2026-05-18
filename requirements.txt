@@ -1,0 +1,24 @@
+# SimplifIQ — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# ── Web framework ────────────────────────────────────────────
+flask>=3.0.0
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+
+# ── HTTP & scraping ──────────────────────────────────────────
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0            # faster HTML parser for BeautifulSoup
+
+# ── AI ───────────────────────────────────────────────────────
+anthropic>=0.34.0
+
+# ── PDF generation ───────────────────────────────────────────
+reportlab>=4.2.0
+
+# ── Google APIs (bonus features) ─────────────────────────────
+# Uncomment if you enable Sheets / Drive integration:
+# google-api-python-client>=2.130.0
+# google-auth>=2.29.0
+# google-auth-httplib2>=0.2.0
